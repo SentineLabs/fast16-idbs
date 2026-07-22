@@ -43,7 +43,11 @@ IDA databases embed the full binary content of the analyzed samples. **Treat the
 ## Verification
 
 ```
+# Linux
 sha256sum -c SHA256SUMS
+
+# macOS
+shasum -a 256 -c SHA256SUMS
 ```
 
 ## Versioning
