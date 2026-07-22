@@ -1,21 +1,34 @@
-# fast16 — Gold-Master IDA Databases
+# fast16 — IDA Databases and Analysis Artifacts
 
-Annotated IDA Pro databases and investigation artifacts for **fast16**, a 2005 Windows sabotage toolkit targeting high-precision solvers used to model nuclear-weapons behavior.
+Reviewed IDA Pro databases and derived analysis for **fast16**, a 2005 Windows malware framework with an embedded Lua 5.0 runtime, network propagation, and a boot-start filesystem driver that applies rule-driven executable patching.
 
-These databases accompany the SentinelLABS post [Sol Searching | Can Frontier Models Tackle Autonomous Long-Horizon Malware Analysis?](https://www.sentinelone.com/labs/frontier-models-tackle-autonomous-long-horizon-malware-analysis/) and the original fast16 research: [fast16: Mystery ShadowBrokers Reference Reveals High-Precision Software Sabotage 5 Years Before Stuxnet](https://www.sentinelone.com/labs/fast16-mystery-shadowbrokers-reference-reveals-high-precision-software-sabotage-5-years-before-stuxnet/) ([s1.ai/fast16](https://s1.ai/fast16)).
+These files accompany the SentinelLABS reports
+[Sol Searching | Can Frontier Models Tackle Autonomous Long-Horizon Malware Analysis?](https://www.sentinelone.com/labs/frontier-models-tackle-autonomous-long-horizon-malware-analysis/)
+and
+[fast16 | Mystery Shadow Brokers Reference Reveals High-Precision Software Sabotage 5 Years Before Stuxnet](https://www.sentinelone.com/labs/fast16-mystery-shadowbrokers-reference-reveals-high-precision-software-sabotage-5-years-before-stuxnet/).
 
-## Contents
+## IDA databases
 
-| File | Component | Description |
+| File | Component | Contents |
 |---|---|---|
-| `idbs/svcmgmt.i64` | `svcmgmt.exe` (carrier) | Gold-master database for the carrier module, a Lua-powered service binary storing the framework's payloads, with findings from the embedded components folded back in. |
-| `idbs/connect.i64` | `svcmgmt.dll` (ConnotifyDLL) | User-mode reporting channel, registered via `AddConnectNotify()` to trigger on new RAS network connections. |
-| `idbs/fast16.i64` | `fast16.sys` (kernel driver) | Boot-start filesystem driver superficially resembling a rootkit; contains the rule-driven in-memory patching engine (101 rules) used for precision sabotage. |
-| `idbs/fast16_payloads.i64` | Lua payloads | The carrier's decrypted Lua bytecode payloads handling configuration, propagation, and coordination logic. |
+| `idbs/svcmgmt.i64` | `svcmgmt.exe` | Carrier and service host with the embedded Lua VM, native bindings, and component storage. |
+| `idbs/connect.i64` | `svcmgmt.dll` | MPR connection-notification DLL. On post-operation notifications, it attempts one write of the adjacent UTF-16 strings `remote\0local\0` to `\\.\pipe\p577`. |
+| `idbs/fast16.i64` | `fast16.sys` | Boot-start filesystem filter containing the 101-rule matcher, read-path modification machinery, and payload-relocation path. |
+| `idbs/fast16_payloads.i64` | Injected payloads | Joint database for the two raw x86/x87 payload templates used by the driver. This is not the Lua policy. |
+
+## Analysis artifacts
+
+| File | Contents |
+|---|---|
+| `analysis/lua/lua_decompiled_source.lua` | Reviewed Lua 5.0 source-equivalent reconstruction of the encrypted bytecode. It is not the original source text. |
+| `analysis/lua/lua_to_native_direct_calls.json` | Map of 92 direct Lua call sites to 44 host-native bindings; no direct sites remain unresolved. |
+| `analysis/lua/lua_configuration_manifest.json` | Derived summary of the service, driver, propagation, and connection-notification configuration recovered from the bytecode. |
+| `analysis/rule101/RULE101_SEMANTIC_CATALOG.json` | Structural catalog of all 101 rules. It is a review candidate, not final behavioral authority: payload ABI, runtime mechanism, and reachable consequence remain pending, and it is not bound to the current driver and payload IDB hashes. |
 
 ## Provenance
 
-These artifacts were produced during a multi-stage reverse-engineering benchmark of frontier reasoning models. The best candidate databases, produced by a GPT-5.6 Sol (high) run, were then put through an extensive adversarial refinement process using an ensemble of models.
+The release set began with the R004 database set produced by
+**GPT-5.6-Sol High/Standard**. The host, connection-notification, and driver databases were corrected and reviewed in later passes. The injected-payload database and the derived analysis artifacts were produced separately. These are not untouched outputs from a single model run.
 
 We make no claim that these databases are perfect — only that they represent the greatest level of automated refinement the most capable models achieved through proper methodology, repeated standard enforcement, and a lot of tokens burned. We share them so other researchers can verify the work against the sample and build on it rather than start from the raw binary.
 
@@ -33,16 +46,9 @@ IDA databases embed the full binary content of the analyzed samples. **Treat the
 sha256sum -c SHA256SUMS
 ```
 
-| SHA-256 | File |
-|---|---|
-| `4b2f31e521bca594c967ad8242db820b4932d5a98eb13c5898225c69eee3081b` | `idbs/svcmgmt.i64` |
-| `d3bc690a24c643c71166badd81239ca80f409fbed72453d1e2eed71ccb33c22a` | `idbs/connect.i64` |
-| `beacb54a980679b152ab02148808b7ce5ecf199d5232fc3907d1766eb3cd629a` | `idbs/fast16.i64` |
-| `5b8ffc4a4db90fc9ba4e81c286a1118c02f5d6d5d8219c7707c6bbc9d0daf1dd` | `idbs/fast16_payloads.i64` |
-
 ## Versioning
 
-Current release: **v1.0** — see [CHANGELOG.md](CHANGELOG.md). These databases may be updated as the community verifies and extends the analysis.
+Current release: **v1.0** — see [CHANGELOG.md](CHANGELOG.md). These files may be updated as the community verifies and extends the analysis.
 
 ## License
 
@@ -50,4 +56,4 @@ The analysis annotations and artifacts are released under [CC BY 4.0](https://cr
 
 ## Authors
 
-SentinelLABS — Juan Andrés Guerrero-Saade & Gabriel Bernadett-Shapiro
+SentinelLABS — Juan Andrés Guerrero-Saade and Gabriel Bernadett-Shapiro

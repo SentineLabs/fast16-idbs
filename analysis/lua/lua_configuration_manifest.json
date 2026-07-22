@@ -1,0 +1,96 @@
+{
+  "document_type": "derived-lua-configuration-manifest",
+  "source": {
+    "decoded_chunk": "embedded_lua_payload.decoded.bin",
+    "decoded_sha256": "b78a5092cd9c755cd123630e694285e6d18b178d5ce1a666416f3b8c7a95d95b",
+    "parsed_chunk": "embedded_lua_payload.parsed.json",
+    "parsed_sha256": "9c09bf03f4bd48d81fe59593b116f046681d3131c38f92e434934147fa15c32a"
+  },
+  "global_config": {
+    "prototype_path": "0.6",
+    "serialized_offset": "0x3950",
+    "lock": "NtfsMetaDataMutex",
+    "initial_delay_seconds": 120,
+    "failure_timeout_seconds": 0,
+    "payload": "%windir%\\system32\\svcmgmt.exe",
+    "service": {
+      "name": "SvcMgmt",
+      "display_name": "Service Management",
+      "description": "Provides service management capability",
+      "registry_key": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\SvcMgmt",
+      "description_value_name": "Description"
+    },
+    "host_executable": {
+      "path": "%windir%\\system32\\svcmgmt.exe",
+      "owner": "Administrators",
+      "metadata_donor": "%windir%\\system32\\services.exe"
+    },
+    "failure_actions": {
+      "implant_install": "go",
+      "worm_install": "go"
+    },
+    "permitted_private_ranges": [
+      {"low": "10.0.0.0", "high": "10.255.255.255"},
+      {"low": "172.16.0.0", "high": "172.31.255.255"},
+      {"low": "192.168.0.0", "high": "192.168.255.255"}
+    ],
+    "forbidden_registry_keys": [
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Symantec\\InstalledApps",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Sygate Technologies, Inc.\\Sygate Personal Firewall",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\TrendMicro\\PFW",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Zone Labs\\TrueVector",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\F-Secure",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Network Ice\\BlackIce",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\McAfee.com\\Personal Firewall",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\ComputerAssociates\\eTrust EZ Armor",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\RedCannon\\Fireball",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Kerio\\Personal Firewall 4",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\KasperskyLab\\InstalledProducts\\Kaspersky Anti-Hacker",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Tiny Software\\Tiny Firewall",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Look 'n' Stop 2.05p2",
+      "HKEY_CURRENT_USER\\SOFTWARE\\Soft4Ever",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Norman Data Defense Systems",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Agnitum\\Outpost Firewall",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\Panda Software\\Firewall",
+      "HKEY_LOCAL_MACHINE\\SOFTWARE\\InfoTeCS\\TermiNET"
+    ]
+  },
+  "implant_config": {
+    "prototype_path": "0.7",
+    "serialized_offset": "0x4288",
+    "tor_key": "win32implant",
+    "destination": "%windir%\\system32\\drivers\\fast16.sys",
+    "service_name": "fast16",
+    "owner": "Administrators",
+    "metadata_donor": "%windir%\\system32\\drivers\\beep.sys",
+    "registry_key": "HKEY_LOCAL_MACHINE\\System\\CurrentControlSet\\Services\\fast16",
+    "registry_values": [
+      {"name": "Start", "type": "REG_DWORD", "value": 0},
+      {"name": "Type", "type": "REG_DWORD", "value": 2},
+      {"name": "ErrorControl", "type": "REG_DWORD", "value": 1},
+      {"name": "Group", "type": "REG_SZ", "value": "SCSI class"}
+    ]
+  },
+  "scm_config": {
+    "prototype_path": "0.8",
+    "serialized_offset": "0x452D",
+    "name": "scm",
+    "notification_pipe": "\\\\.\\pipe\\p577",
+    "notification_timeout_seconds": 133,
+    "network_provider": {
+      "base_key": "HKEY_LOCAL_MACHINE\\system\\CurrentControlSet\\Control\\NetworkProvider",
+      "subkey": "Notifyees",
+      "value_name": "svcmgmt",
+      "dll_path": "%windir%\\system32\\svcmgmt.dll",
+      "tor_key": "connotifydll",
+      "owner": "Administrators",
+      "metadata_donor": "%windir%\\system32\\mpr.dll"
+    },
+    "share": "admin$",
+    "payload_directory": "\\system32\\",
+    "logon_poll_rate_seconds": 67,
+    "phase_1_propagation_delay_seconds": 20,
+    "logged_on_program": "explorer.exe"
+  },
+  "status": "derived summary; parsed bytecode remains authoritative"
+}
