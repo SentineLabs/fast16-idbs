@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0 — <!-- TODO: publication date -->
+## v1.0 — July 22, 2026
 
 Initial release accompanying *Sol Searching | Can Frontier Models Tackle Autonomous Long-Horizon Malware Analysis?*
 

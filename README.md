@@ -2,16 +2,16 @@
 
 Annotated IDA Pro databases and investigation artifacts for **fast16**, a 2005 Windows sabotage toolkit targeting high-precision solvers used to model nuclear-weapons behavior.
 
-These databases accompany the SentinelLABS post *Sol Searching | Can Frontier Models Tackle Autonomous Long-Horizon Malware Analysis?* <!-- TODO: post URL --> and the original fast16 research: [fast16: Mystery ShadowBrokers Reference Reveals High-Precision Software Sabotage 5 Years Before Stuxnet](https://www.sentinelone.com/labs/fast16-mystery-shadowbrokers-reference-reveals-high-precision-software-sabotage-5-years-before-stuxnet/) ([s1.ai/fast16](https://s1.ai/fast16)).
+These databases accompany the SentinelLABS post [Sol Searching | Can Frontier Models Tackle Autonomous Long-Horizon Malware Analysis?](https://www.sentinelone.com/labs/frontier-models-tackle-autonomous-long-horizon-malware-analysis/) and the original fast16 research: [fast16: Mystery ShadowBrokers Reference Reveals High-Precision Software Sabotage 5 Years Before Stuxnet](https://www.sentinelone.com/labs/fast16-mystery-shadowbrokers-reference-reveals-high-precision-software-sabotage-5-years-before-stuxnet/) ([s1.ai/fast16](https://s1.ai/fast16)).
 
 ## Contents
 
 | File | Component | Description |
 |---|---|---|
-| `idbs/svcmgmt.i64` | `svcmgmt.exe` (host) | Gold-master database for the host service implant, with findings from the embedded components folded back in. |
-| `idbs/connect.i64` | Connect | Embedded component recovered from the host sample. <!-- TODO: authors confirm description --> |
-| `idbs/fast16.i64` | fast16 kernel driver | The driver superficially resembling a filesystem rootkit; contains the 101-rule patching engine. |
-| `idbs/fast16_payloads.i64` | Lua operations framework | The encrypted Lua-driven operations framework and payloads. <!-- TODO: authors confirm description --> |
+| `idbs/svcmgmt.i64` | `svcmgmt.exe` (carrier) | Gold-master database for the carrier module, a Lua-powered service binary storing the framework's payloads, with findings from the embedded components folded back in. |
+| `idbs/connect.i64` | `svcmgmt.dll` (ConnotifyDLL) | User-mode reporting channel, registered via `AddConnectNotify()` to trigger on new RAS network connections. |
+| `idbs/fast16.i64` | `fast16.sys` (kernel driver) | Boot-start filesystem driver superficially resembling a rootkit; contains the rule-driven in-memory patching engine (101 rules) used for precision sabotage. |
+| `idbs/fast16_payloads.i64` | Lua payloads | The carrier's decrypted Lua bytecode payloads handling configuration, propagation, and coordination logic. |
 
 ## Provenance
 
@@ -46,7 +46,7 @@ Current release: **v1.0** — see [CHANGELOG.md](CHANGELOG.md). These databases 
 
 ## License
 
-<!-- TODO: pending decision (CC BY 4.0 proposed) -->
+The analysis annotations and artifacts are released under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/) — see [LICENSE](LICENSE). The embedded sample binaries are not our work and are included solely for research verification.
 
 ## Authors
 

@@ -1,0 +1,18 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2026 SentinelOne (SentinelLABS)
+
+This work — annotated IDA Pro databases and investigation artifacts for the
+fast16 toolkit — is licensed under the Creative Commons Attribution 4.0
+International License.
+
+You are free to share and adapt this material for any purpose, provided you
+give appropriate credit to SentinelLABS, provide a link to the license, and
+indicate if changes were made.
+
+Full license text: https://creativecommons.org/licenses/by/4.0/legalcode
+
+NOTE: This license covers the analysis annotations and artifacts produced by
+SentinelLABS. The binary content of the fast16 malware samples embedded within
+the databases is not our work and is included solely for research
+verification purposes.
